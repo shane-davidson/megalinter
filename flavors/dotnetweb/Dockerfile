@@ -262,7 +262,7 @@ COPY --link --from=lychee /usr/local/bin/lychee /usr/bin/
 #############################################################################################
 #OTHER__START
 # ARM installation
-RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/powershell-7.4.0-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz \
+RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/powershell-7.4.1-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz \
     && mkdir -p /opt/microsoft/powershell/7 \
     && tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7 \
     && chmod +x /opt/microsoft/powershell/7/pwsh \
@@ -278,7 +278,7 @@ ENV PATH="$JAVA_HOME/bin:${PATH}"
 
 # POWERSHELL installation
 # Next line commented because already managed by another linter
-# RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/powershell-7.4.0-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz \
+# RUN curl -L https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/powershell-7.4.1-linux-musl-x64.tar.gz -o /tmp/powershell.tar.gz \
 #     && mkdir -p /opt/microsoft/powershell/7 \
 #     && tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7 \
 #     && chmod +x /opt/microsoft/powershell/7/pwsh \
@@ -344,6 +344,14 @@ RUN curl --retry 5 --retry-delay 5 -sLO "${ARM_TTK_URI}" \
     && curl --retry 5 --retry-delay 5 -sSLO https://github.com/pinterest/ktlint/releases/latest/download/ktlint && \
     chmod a+x ktlint && \
     mv "ktlint" /usr/bin/ \
+
+# detekt installation
+    && curl --retry 5 --retry-delay 5 -sSLO https://github.com/detekt/detekt/releases/download/v1.23.5/detekt-cli-1.23.5.zip && \
+    unzip detekt-cli-1.23.5.zip && \
+    chmod a+x detekt-cli-1.23.5/bin/* && \
+    chmod a+x detekt-cli-1.23.5/lib/* && \
+    mv -n detekt-cli-1.23.5/bin/* usr/bin && \
+    mv -n detekt-cli-1.23.5/lib/* usr/lib \
 
 # kubeconform installation
 # Managed with COPY --link --from=kubeconform /kubeconform /usr/bin/

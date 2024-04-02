@@ -19,7 +19,7 @@ See more details in [Help](#help-content)
 
 ## sfdx-scanner-aura documentation
 
-- Version in MegaLinter: **3.21.0**
+- Version in MegaLinter: **3.23.0**
 - Visit [Official Web Site](https://forcedotcom.github.io/sfdx-scanner/){target=_blank}
 - See [How to configure sfdx-scanner-aura rules](https://eslint.org/docs/user-guide/configuring){target=_blank}
 - See [How to disable sfdx-scanner-aura rules in files](https://eslint.org/docs/user-guide/configuring/rules#disabling-rules){target=_blank}
@@ -43,7 +43,7 @@ See more details in [Help](#help-content)
 | SALESFORCE_SFDX_SCANNER_AURA_RULES_PATH                  | Path where to find linter configuration file                                                                        | Workspace folder, then MegaLinter default rules |
 | SALESFORCE_SFDX_SCANNER_AURA_DISABLE_ERRORS              | Run linter but consider errors as warnings                                                                          | `false`                                         |
 | SALESFORCE_SFDX_SCANNER_AURA_DISABLE_ERRORS_IF_LESS_THAN | Maximum number of errors allowed                                                                                    | `0`                                             |
-| SALESFORCE_SFDX_SCANNER_AURA_CLI_EXECUTABLE              | Override CLI executable                                                                                             | `['sfdx']`                                      |
+| SALESFORCE_SFDX_SCANNER_AURA_CLI_EXECUTABLE              | Override CLI executable                                                                                             | `['sf']`                                        |
 | SALESFORCE_DIRECTORY                                     | Directory containing SALESFORCE files (use `any` to always activate the linter)                                     | `force-app`                                     |
 
 ## IDE Integration
@@ -60,8 +60,8 @@ This linter is available in the following flavours
 
 |                                                                         <!-- -->                                                                         | Flavor                                                       | Description                             | Embedded linters |                                                                                                                                                                                             Info |
 |:--------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------|:----------------------------------------|:----------------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/images/mega-linter-square.png" alt="" height="32px" class="megalinter-icon"></a> | [all](https://megalinter.io/beta/supported-linters/)         | Default MegaLinter Flavor               |       121        |                       ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter) |
-|     <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/icons/salesforce.ico" alt="" height="32px" class="megalinter-icon"></a>      | [salesforce](https://megalinter.io/beta/flavors/salesforce/) | Optimized for Salesforce based projects |        55        | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter-salesforce/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter-salesforce) |
+| <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/images/mega-linter-square.png" alt="" height="32px" class="megalinter-icon"></a> | [all](https://megalinter.io/beta/supported-linters/)         | Default MegaLinter Flavor               |       122        |                       ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter) |
+|     <img src="https://github.com/oxsecurity/megalinter/raw/main/docs/assets/icons/salesforce.ico" alt="" height="32px" class="megalinter-icon"></a>      | [salesforce](https://megalinter.io/beta/flavors/salesforce/) | Optimized for Salesforce based projects |        56        | ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/oxsecurity/megalinter-salesforce/beta) ![Docker Pulls](https://img.shields.io/docker/pulls/oxsecurity/megalinter-salesforce) |
 
 ## Behind the scenes
 
@@ -82,24 +82,24 @@ sfdx-scanner-aura is called once on the whole project directory (`project` CLI l
 ### Example calls
 
 ```shell
-sfdx scanner:run
+sf scanner:run
 ```
 
 
 ### Help content
 
 ```shell
-(node:2172) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:2244) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 scan a codebase with a selection of rules
 
 USAGE
   $ sf scanner run [--verbose] [-c <value>] [-f
-    csv|html|json|junit|sarif|table|xml] [-o <value>] [-s <value> | ]
+    csv|html|json|junit|sarif|table|xml] [-o <value>] [-s <value> | --json]
     [--normalize-severity] [-p <value>] [-r <value>] [-e
     eslint|eslint-lwc|eslint-typescript|pmd|pmd-appexchange|retire-js|sfge|cpd]
     [-t <value>] [--tsconfig <value>] [--eslintconfig <value>] [--pmdconfig
-    <value>] [--env <value>] [--verbose-violations]
+    <value>] [--preview-pmd7] [--env <value>] [--verbose-violations]
 
 FLAGS
   -c, --category=<value>...         one or more categories of rules to run
@@ -111,13 +111,13 @@ FLAGS
                                     csv|html|json|junit|sarif|table|xml>
   -o, --outfile=<value>             write output to a file
   -p, --projectdir=<value>...       root directory of project
-  -r, --ruleset=<value>...          [deprecated] rulesets to run
+  -r, --ruleset=<value>...          [Deprecated] rulesets to run
   -s, --severity-threshold=<value>  throw an error when a violation threshold is
                                     reached, the --normalize-severity is
                                     invoked, and severity levels are reset to
                                     the baseline
   -t, --target=<value>...           source code location
-      --env=<value>                 [deprecated] override ESLint's default
+      --env=<value>                 [Deprecated] override ESLint's default
                                     environment variables, in JSON-formatted
                                     string
       --eslintconfig=<value>        specify the location of eslintrc config to
@@ -127,15 +127,23 @@ FLAGS
                                     engine-specific severity
       --pmdconfig=<value>           specify location of PMD rule reference XML
                                     file to customize rule selection
+      --preview-pmd7                use PMD version 7.0.0-rc4 when running PMD
+                                    and CPD
       --tsconfig=<value>            location of tsconfig.json file
       --verbose                     emit additional command output to stdout
       --verbose-violations          return retire-js violation message details
 
+GLOBAL FLAGS
+  --json  Format output as json.
+
 COMMANDS
   scanner run dfa  scan codebase with all DFA rules
 
-(node:2190) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:2268) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
+ ›   Warning: Plugin @salesforce/sfdx-scanner (3.23.0) differs from the version
+ ›    specified by sf (3.22.0)
+Warning: To use the most up-to-date Code Analyzer features including PMD 7.x, install Code Analyzer v4.x (Beta). To install v4.x (beta), run this command: sf plugins install @salesforce/sfdx-scanner@latest-beta
 Warning: We're continually improving Salesforce Code Analyzer. Tell us what you think! Give feedback at https://research.net/r/SalesforceCA
  name                                                   languages   categories            rulesets [dep]                                   engine            is dfa is pilot
  ────────────────────────────────────────────────────── ─────────── ───────────────────── ──────────────────────────────────────────────── ───────────────── ────── ────────
@@ -365,12 +373,12 @@ Warning: We're continually improving Salesforce Code Analyzer. Tell us what you 
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 ENV PATH="$JAVA_HOME/bin:${PATH}"
 RUN sf plugins install @salesforce/plugin-packaging \
-    && echo y|sfdx plugins:install sfdx-hardis \
+    && echo y|sf plugins install sfdx-hardis \
     && npm cache clean --force || true \
     && rm -rf /root/.npm/_cacache
 
 # Linter install
-RUN sfdx plugins:install @salesforce/sfdx-scanner \
+RUN sf plugins install @salesforce/sfdx-scanner \
     && npm cache clean --force || true \
     && rm -rf /root/.npm/_cacache
 

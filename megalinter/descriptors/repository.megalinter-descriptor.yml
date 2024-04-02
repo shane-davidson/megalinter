@@ -324,6 +324,8 @@ linters:
       - --report-formats
       - "sarif"
     cli_version_arg_name: "version"
+    cli_lint_errors_count: regex_number
+    cli_lint_errors_regex: "TOTAL: ([0-9]+)"
     examples:
       - "kics scan --path ."
     install:
@@ -575,6 +577,7 @@ linters:
       - "."
       - --fail
       - --only-verified
+      - --no-update
     cli_help_arg_name: --help
     cli_version_arg_name: --version
     examples:
