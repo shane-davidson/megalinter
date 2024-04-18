@@ -227,6 +227,15 @@ class Megalinter:
         for reporter in self.reporters:
             reporter.initialize()
 
+        active_descriptor_ids = []
+
+        for active_linter in active_linters:
+            if active_linter.descriptor_id not in active_descriptor_ids:
+                active_descriptor_ids += [active_linter.descriptor_id]
+
+        for active_descriptor_id in active_descriptor_ids:
+            pre_post_factory.run_descriptor_pre_commands(self, active_descriptor_id)
+
         if (
             config.get(self.request_id, "PARALLEL", "true") == "true"
             and len(active_linters) > 1
@@ -234,6 +243,9 @@ class Megalinter:
             self.process_linters_parallel(active_linters, linters_do_fixes)
         else:
             self.process_linters_serial(active_linters)
+
+        for active_descriptor_id in active_descriptor_ids:
+            pre_post_factory.run_descriptor_post_commands(self, active_descriptor_id)
 
         # Update main MegaLinter status according to results of linters run
         for linter in self.linters:
@@ -761,10 +773,10 @@ class Megalinter:
                 "HEAD" if default_branch == "HEAD" else f"refs/heads/{default_branch}"
             )
             local_ref = f"refs/remotes/{default_branch_remote}"
-            # Try to fetch default_branch from origin, because it'sn't cached locally.
+            # Try to fetch default_branch from origin, because it isn't cached locally.
             repo.git.fetch("origin", f"{remote_ref}:{local_ref}")
         # Make git diff to list files (and exclude symlinks)
-        diff = repo.git.diff(default_branch_remote, name_only=True)
+        diff = repo.git.diff(f"{default_branch_remote}...", name_only=True)
         logging.info(f"Modified files:\n{diff}")
         all_files = list()
         for diff_line in diff.splitlines():
